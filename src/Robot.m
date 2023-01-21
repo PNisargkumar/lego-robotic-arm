@@ -8,14 +8,10 @@ classdef Robot < handle
         j2motor
         j1motor
         cpos = 'A'
-        a = 6/100;
-        b = 0;
-        c = 2.9/100;
-        var
         
     end
     methods
-        function obj = Robot(input,a,b,c)
+        function obj = Robot(input)
             obj.mylego = input;
             obj.j1Sensor = touchSensor(obj.mylego,1);
             obj.link3 = touchSensor(obj.mylego,3);
@@ -26,9 +22,7 @@ classdef Robot < handle
             start(obj.j2motor)
             start(obj.j1motor)
             start(obj.eemotor)
-            obj.a = a;
-            obj.b = b;
-            obj.c = c;
+
         end
         function zuHause(obj)
             while(~readTouch(obj.link3))
@@ -45,15 +39,12 @@ classdef Robot < handle
             pause(1)
             obj.eemotor.Speed = 0;
             resetRotation(obj.eemotor);
-            obj.gehen();
-            obj.cpos = 'B';
-        end
-        function gehen(obj)
             while (readRotation(obj.j1motor) >= -300)
                 obj.j1motor.Speed = -20;
                 %                 readRotation(obj.j1motor)
             end
             obj.j1motor.Speed = 0;
+            obj.cpos = 'B';
         end
         function dist = leseDistanz(obj)
             dist = readDistance(obj.sonic);
@@ -117,14 +108,7 @@ classdef Robot < handle
             obj.j2motor.Speed = 0;
         end
         function unten(obj)
-            if obj.cpos == 'A'
-                obj.var = obj.a;
-            elseif obj.cpos == 'B'
-                obj.var = obj.b;
-            else
-                obj.var = obj.c;
-            end
-            while (readDistance(obj.sonic) > obj.var + 0.055)
+            while (readDistance(obj.sonic) > 0.058)
                 obj.j2motor.Speed = 20;
                 readRotation(obj.j2motor);
             end

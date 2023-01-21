@@ -1,10 +1,7 @@
 clear all;
 clc;
 mylego = legoev3('usb');
-a = 3/100;
-b = 0;
-c = 6/100;
-robo = Robot(mylego,a,b,c);
+robo = Robot(mylego);
 robo.zuHause();
 funf(robo);
 sechs(robo);
