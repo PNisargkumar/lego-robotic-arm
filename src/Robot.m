@@ -8,7 +8,6 @@ classdef Robot < handle
         eemotor
         j2motor
         j1motor
-<<<<<<< HEAD
         l0 = 55
         l1 = 50
         l2 = 95
@@ -18,10 +17,6 @@ classdef Robot < handle
         j2scale = 4
         % Variables for station and control
         cpos = 'A'
-=======
-        % Variables for station and control
-        cpos = 'A' % Current Position
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
         p_a_a % Platform A angle
         p_b_a % Platform B angle
         p_c_a % Platform C angle
@@ -43,12 +38,7 @@ classdef Robot < handle
             start(obj.j2motor)
             start(obj.j1motor)
             start(obj.eemotor)
-<<<<<<< HEAD
             % Initializing Variables
-=======
-
-            % Initializing Platform Location in Degrees
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
             if ax == 0
                 obj.p_a_a = 90;
             elseif ax < 0 && ay <= 0
@@ -60,7 +50,6 @@ classdef Robot < handle
             if bx == 0
                 obj.p_b_a = 90;
             elseif bx < 0 && by <= 0
-<<<<<<< HEAD
                 obj.p_b_a = atand(by / bx) + 180;
             else
                 obj.p_b_a = atand(by / bx);
@@ -80,20 +69,6 @@ classdef Robot < handle
             obj.l4 = 110 - 35;
             obj.j1scale = 3.33;
             obj.j2scale = 4;
-=======
-                obj.p_b_a =atand(by/bx)+180;
-            else
-                obj.p_b_a = atand( by/bx );
-            end
-            
-            if cx == 0
-                obj.p_c_a =90;
-            elseif cx < 0 && cy <= 0
-                obj.p_c_a =atand(cy/cx)+180;
-            else
-                obj.p_c_a = atand( cy/cx );
-            end
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
         end
         function zuHause(obj)
             
@@ -112,7 +87,6 @@ classdef Robot < handle
             resetRotation(obj.j1motor)
             
             % Calibrating Gripper Motor
-<<<<<<< HEAD
             obj.eemotor.Speed = -30;
             pause(1)
             obj.eemotor.Speed = 0;
@@ -138,37 +112,6 @@ classdef Robot < handle
             obj.p_a_h = floor((asind((obj.p_a_h - obj.l0 - obj.l1 - (obj.l2 * sind(45)) + obj.l4) / obj.l3) + 45) * obj.j2scale);
             obj.p_b_h = floor((asind((obj.p_b_h - obj.l0 - obj.l1 - (obj.l2 * sind(45)) + obj.l4) / obj.l3) + 45) * obj.j2scale);
             obj.p_c_h = floor((asind((obj.p_c_h - obj.l0 - obj.l1 - (obj.l2 * sind(45)) + obj.l4) / obj.l3) + 45) * obj.j2scale);
-=======
-            obj.eemotor.Speed = -20;
-            pause(1)
-            obj.eemotor.Speed = 0;
-            resetRotation(obj.eemotor);
-
-            % Converting angles to encoder counts
-            obj.p_a_a = floor(obj.p_a_a * 3.33);
-            obj.p_b_a = floor(obj.p_b_a * 3.33);
-            obj.p_c_a = floor(obj.p_c_a * 3.33);
-            obj.goto('B')
-        end
-        function hoehelesen(obj)
-            % Measuring Platform Heights
-            obj.goto('A')
-            pause(1);
-            obj.p_a_h = readDistance(obj.sonic);
-            obj.goto('B')
-            pause(1);
-            obj.p_b_h = readDistance(obj.sonic);
-            obj.goto('C')
-            pause(1);
-            obj.p_c_h = readDistance(obj.sonic);
-            obj.goto('B')
-        end
-        function invKinT2(obj)
-            % Calculating encoder values for the measured platform heights
-            obj.p_a_h = floor((asind((obj.p_a_h * 1000 - 132.175) / 185) + 45) * 4.05);
-            obj.p_b_h = floor((asind((obj.p_b_h * 1000 - 132.175) / 185) + 45) * 4.05);
-            obj.p_c_h = floor((asind((obj.p_c_h * 1000 - 132.175) / 185) + 45) * 4.05);
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
         end
         function opengripper(obj)
             while (readRotation(obj.eemotor) < 80)
@@ -186,11 +129,7 @@ classdef Robot < handle
             switch station
                 case 'A'
                     while (readRotation(obj.j1motor) < obj.p_a_a)
-<<<<<<< HEAD
                         obj.j1motor.Speed = 30;
-=======
-                        obj.j1motor.Speed = 20;
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
                     end
                     obj.j1motor.Speed = 0;
                     obj.cpos = 'A';
@@ -198,31 +137,19 @@ classdef Robot < handle
                     if obj.cpos == 'A'
                         readRotation(obj.j1motor);
                         while (readRotation(obj.j1motor) > -1 * obj.p_b_a)
-<<<<<<< HEAD
                             obj.j1motor.Speed = -30;
-=======
-                            obj.j1motor.Speed = -20;
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
                         end
                         obj.j1motor.Speed = 0;
                     elseif obj.cpos == 'C'
                         while (readRotation(obj.j1motor) < -1 * obj.p_b_a)
-<<<<<<< HEAD
                             obj.j1motor.Speed = 30;
-=======
-                            obj.j1motor.Speed = 20;
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
                         end
                         obj.j1motor.Speed = 0;
                     end
                     obj.cpos = 'B';
                 case 'C'
                     while (readRotation(obj.j1motor) > -1 * obj.p_c_a)
-<<<<<<< HEAD
                         obj.j1motor.Speed = -30;
-=======
-                        obj.j1motor.Speed = -20;
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
                     end
                     obj.j1motor.Speed = 0;
                     obj.cpos = 'C';
@@ -253,18 +180,12 @@ classdef Robot < handle
             obj.j2motor.Speed = 0;
         end
         function holen(obj)
-            % function pick the object
             obj.opengripper();
             obj.unten();
             obj.closegripper();
-<<<<<<< HEAD
             obj.oben();
-=======
-            obj.oben();            
->>>>>>> 3ad755b3df2dc63f2967a76170479bbfea6f9e35
         end
         function legen(obj)
-            % function place the object
             obj.unten();
             obj.opengripper();
             obj.oben();
