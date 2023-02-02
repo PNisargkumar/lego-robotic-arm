@@ -1,7 +1,7 @@
-function sieben(robo)
-    robo.goto('A');
-    robo.holen();
-    robo.goto('B');
-    robo.legen();
-    robo.goto('B');
+function sieben(robot)
+    robot.goto('A');
+    robot.holen();
+    robot.goto('B');
+    robot.legen();
+    robot.goto('B');
 end

@@ -1,9 +1,7 @@
-function sechs(robo)
-    robo.goto('C');
-    robo.holen();
-    robo.goto('A');
-    robo.legen();
-    robo.goto('B');
-    
-
+function sechs(robot)
+    robot.goto('C');
+    robot.holen();
+    robot.goto('A');
+    robot.legen();
+    robot.goto('B');
 end

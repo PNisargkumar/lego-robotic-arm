@@ -9,16 +9,19 @@ classdef Robot < handle
         eemotor
         j2motor
         j1motor
-        % Links length
+
+        % Link lengths
         l0 = 55
         l1 = 50
         l2 = 95
         l3 = 185
-        l4 = 110 - 38
+        l4 = 110 - 45
+
         % Gear Ratio or joint angles to encoder values (with error adjusted)
         j1scale = 3.33
         j2scale = 4
-        % Current Robo Station
+
+        % Variables for station and control
         cpos = 'A'
         p_a_a % Platform A angle
         p_b_a % Platform B angle
@@ -41,34 +44,13 @@ classdef Robot < handle
             start(obj.j2motor)
             start(obj.j1motor)
             start(obj.eemotor)
-            % Detemining Theta1 base angles
-            if ax == 0
-                obj.p_a_a = 90;
-            elseif ax < 0 && ay <= 0
-                obj.p_a_a = atand(ay / ax) + 180;
-            else
-                obj.p_a_a = atand(ay / ax);
-            end
-            
-            if bx == 0
-                obj.p_b_a = 90;
-            elseif bx < 0 && by <= 0
-                obj.p_b_a = atand(by / bx) + 180;
-            else
-                obj.p_b_a = atand(by / bx);
-            end
-            
-            if cx == 0
-                obj.p_c_a = 90;
-            elseif cx < 0 && cy <= 0
-                obj.p_c_a = atand(cy / cx) + 180;
-            else
-                obj.p_c_a = atand(cy / cx);
-            end
+
+            % Inverse kinematics for Theta 1
+            obj.p_a_a = atan2d(ay, ax);
+            obj.p_b_a = atan2d(by, bx);
+            obj.p_c_a = atan2d(cy, cx);
         end
-        % Go to Home Position
         function zuHause(obj)
-            
             % Calibrating motor B
             while(~readTouch(obj.link3))
                 obj.j2motor.Speed = -30;
@@ -88,11 +70,13 @@ classdef Robot < handle
             pause(1)
             obj.eemotor.Speed = 0;
             resetRotation(obj.eemotor);
-            % Converting base angles values to encoder values (Theta1)
+
+            % Converting Theta 1 values to encoder values
             obj.p_a_a = floor(obj.p_a_a * obj.j1scale);
             obj.p_b_a = floor(obj.p_b_a * obj.j1scale);
             obj.p_c_a = floor(obj.p_c_a * obj.j1scale);
             obj.goto('B')
+            pause(1);
         end
         % Reading & calculating Platform Heights using sonic sensor
         function hoehelesen(obj)
@@ -107,7 +91,8 @@ classdef Robot < handle
             obj.p_c_h = readDistance(obj.sonic) * 1000;
             obj.goto('B')
         end
-        % Detemining Theta2 angle & converting to encoder values
+
+        % Detemining Theta2 & converting to encoder values
         function invKinT2(obj)
             obj.p_a_h = floor((asind((obj.p_a_h - obj.l0 - obj.l1 - (obj.l2 * sind(45)) + obj.l4) / obj.l3) + 45) * obj.j2scale);
             obj.p_b_h = floor((asind((obj.p_b_h - obj.l0 - obj.l1 - (obj.l2 * sind(45)) + obj.l4) / obj.l3) + 45) * obj.j2scale);
@@ -115,16 +100,17 @@ classdef Robot < handle
         end
         function opengripper(obj)
             while (readRotation(obj.eemotor) < 80)
-                obj.eemotor.Speed = 10;
+                obj.eemotor.Speed = 20;
             end
             obj.eemotor.Speed = 0;
         end
         function closegripper(obj)
             while (readRotation(obj.eemotor) > 14)
-                obj.eemotor.Speed = -10;
+                obj.eemotor.Speed = -20;
             end
             obj.eemotor.Speed = 0;
         end
+        
         % Goto Station A or B or C
         function goto(obj, station)
             switch station

@@ -1,7 +1,7 @@
-function neun(robo)
-    robo.goto('A');
-    robo.holen();
-    robo.goto('C');
-    robo.legen();
-    robo.goto('B');
+function neun(robot)
+    robot.goto('A');
+    robot.holen();
+    robot.goto('C');
+    robot.legen();
+    robot.goto('B');
 end

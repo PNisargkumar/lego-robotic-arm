@@ -1,16 +1,19 @@
 clear;
 clc;
 mylego = legoev3('usb');
-% x & y co-orcinates of the flatforms
-% heights of the platforms are variable and measured 
-ax = 117.9;
+% x & y co-ordinates of the platforms
+ax = 110;
 ay = 0;
 bx = 0;
-by = 117.9;
-cx = -117.9;
+by = 110;
+cx = -110;
 cy = 0;
 disp('Calibrating Encoders and go to home')
-robo = Robot(mylego,ax,ay,bx,by,cx,cy);
+% % Use this to run without PID controller
+ robo = Robot(mylego,ax,ay,bx,by,cx,cy);
+
+% % Use this to run without PID controller
+% robo = Robot_pid(mylego,ax,ay,bx,by,cx,cy);
 disp('Going to Home position')
 robo.zuHause()
 disp('Reading Platform Heights')

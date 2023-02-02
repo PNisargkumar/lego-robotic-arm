@@ -1,2 +1,3 @@
 # lego-robotic-arm
-Programming Robotic Arm for Pick and Place Operation
+Programming a Lego EV3 Robotic Arm to perform Pick and Place Operations 
+Using Geometrical approach for Inverse kinematics 
